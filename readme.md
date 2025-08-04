@@ -1,61 +1,32 @@
 # URL Safety Classifier (Machine Learning Model)
 
-A lightweight and fast URL safety classifier based on a trained Random Forest model. This tool predicts whether a URL is malicious or safe using engineered features without depending on external APIs.
+A lightweight and fast URL safety classifier built with Random Forest in Python. This tool predicts whether a URL is malicious or safe using engineered features — no external API dependency required for basic functionality
 
 ---
 
 ## Features
 
-- Trained Random Forest model using scikit-learn  
-- URL feature extraction module  
-- Modular structure for easy integration  
-- Lightweight and fast  
+-Machine Learning Model: Pre-trained Random Forest using scikit-learn
 
+-Feature Extraction: Extracts multiple URL characteristics for prediction
 
+-Fast & Lightweight: Minimal dependencies, instant predictions
 
+-Modular Structure: Easy to integrate into other Python or web apps
 
----
-
-## Installation
-
-### Prerequisites
-
-- Python 3.8+  
-- pip  
-
-
-```bash
-# Clone the repository
-git clone https://github.com/Ashutosh-Ranjan310106/drdolinksaftycheck.git
-cd drdolinksaftycheck
-
-# Create virtual environment (optional but recommended)
-python -m venv venv
-venv\Scripts\activate  # On Linux: source venv/bin/activate
-
-# Install required packages
-pip install -r requirements.txt
-```
+-Optional External APIs: Integrate Google Safe Browsing & VirusTotal for extended checks
 
 
 
 
 
-## Run Locally
-```bash
-# Start the Flask app
-python app.py
-```
----
-#### Navigate to http://localhost:5000 in your browser to test the UI.
 
 
 ## Live Demo
 
 https://drdolinksaftycheck.onrender.com/
 
-⚠️ **Heads-up:** There might be a delay of 30-50 seconds when opening the link for the first time. 
-This is normal — free Render deployments sleep when inactive to save resources.
+⚠️ First load may take 30–50 seconds because free Render servers go to sleep when inactive.
 
 
 
@@ -63,17 +34,16 @@ This is normal — free Render deployments sleep when inactive to save resources
 
 To run this project, you can (optionally) define the following environment variables in a `.env` file.
 
-> ⚠️ **Note:** The application can still run without setting these.  
 > Missing values will disable some features or use defaults.
 
 | Variable Name   | Description                                      | Required | Default         |
 |----------------|--------------------------------------------------|----------|-----------------|
-| `APIKEY`        | Google API Key — used for extended URL analysis | ❌       | `None`          |
-| `VT_API_KEY`    | VirusTotal API Key — used for extended URL analysis      | ❌       | `None`          |
-| `HOST`          | Host for the Flask server                       | ❌       | `localhost`       |
-| `PORT`          | Port for the Flask server                       | ❌       | `5000`          |
-| `BACKEND_URL`   | Fully-qualified URL used by frontend to connect | ❌       | Auto-generated  |
-| `DEBUG`         | Enables Flask debug mode (`True`/`False`)       | ❌       | `True`          |
+| `APIKEY`        | Google API Key — used for extended URL analysis | NO       | `None`          |
+| `VT_API_KEY`    | VirusTotal API Key — used for extended URL analysis      | NO     | `None`          |
+| `HOST`          | Host for the Flask server                       | NO      | `localhost`       |
+| `PORT`          | Port for the Flask server                       | NO     | `5000`          |
+| `BACKEND_URL`   | Fully-qualified URL used by frontend to connect | NO       | Auto-generated  |
+| `DEBUG`         | Enables Flask debug mode (`True`/`False`)       | NO       | `True`          |
 
 📌 **Tip:**  
 If you are deploying on platforms like Render, define these environment variables in their dashboard under **Environment > Environment Variables**.
@@ -88,9 +58,4 @@ DEBUG=False
 BACKEND_URL=https://yourbackend.onrender.com
 ```
 
-
-
-## Screenshots
-
-![App Screenshot](screenshots/result.png)
 
