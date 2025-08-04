@@ -3,8 +3,6 @@
 # Combines VirusTotal, Google API, and ML model
 # ---------------------------------------------
 
-import requests
-import json
 from flask import jsonify, Flask, request, render_template
 from time import sleep
 from dotenv import load_dotenv
@@ -22,7 +20,10 @@ from functions.extract_features import extract_all_features
 # Load pretrained ML model (Random Forest)
 # and feature column names from pickle file
 # -------------------------------
-model_path = r'model\random_forest_model.pkl'
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, 'model', 'random_forest_model.pkl')
+
 with open(model_path, 'rb') as f:
     RFmodel = pickle.load(f)                # Load the trained Random Forest model
     independent_features = pickle.load(f)   # Load the list of features used during training
@@ -40,11 +41,14 @@ app = Flask(__name__)
 app.config["secret_key"] = 'mysecretkey'  # Flask secret key
 app.config["jwt_secret"] = 'myjwtsecret'  # JWT secret (not used here)
 app.config["jwt_algorithm"] = 'HS256'     # JWT algorithm (not used here)
-app.config["HOST"] = os.getenv("HOST", "localhost")  # Server host
-app.config["PORT"] = int(os.getenv("PORT", 5000))     # Server port
+
 app.config["TEMPLATE_FOLDER"] = "templates"           # Template folder for frontend
 app.config["DEBUG"] = os.getenv("DEBUG", "True").lower() == "true"  # Debug mode
-
+if app.config["DEBUG"]:
+    app.config["HOST"] = os.getenv("HOST", "localhost")  # Server host
+else:
+    app.config["HOST"] = '0.0.0.0'
+app.config["PORT"] = int(os.getenv("PORT", 5000))     # Server port
 # Read API keys from environment or fallback to None
 api_key = os.getenv('APIKEY') or None
 VT_API_KEY = os.getenv("VT_API_KEY") or None
@@ -53,7 +57,7 @@ VT_API_KEY = os.getenv("VT_API_KEY") or None
 save_log = os.getenv("SAVE_LOG", "True").lower() == "true"
 
 # Backend URL construction for frontend
-backend_url = f"http://{app.config['HOST']}:{app.config['PORT']}"
+backend_url = os.getenv('BACKEND_URL',f"http://{app.config['HOST']}:{app.config['PORT']}")
 
 # ------------------------------------------------------
 # Function to classify a URL using ML model (RandomForest)
@@ -161,6 +165,7 @@ def check():
 # ---------------------------------------------
 # Start Flask app if this file is executed directly
 # ---------------------------------------------
+
 if __name__ == "__main__":
     app.run(
         host=app.config["HOST"],
